@@ -4,6 +4,7 @@ package com.example.demo.entity;
 import java.util.Optional;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import com.example.demo.entity.enums.UserType;
 
@@ -23,9 +24,11 @@ public class User {
 	private Long id;
 
 	@Column(nullable = false)
+	@NotBlank
 	private String name;
 
 	@Column(nullable = false)
+	@Email
 	private String email;
 	
 	private UserType userType;
