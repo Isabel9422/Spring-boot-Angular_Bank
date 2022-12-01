@@ -51,9 +51,12 @@ public class UserController {
 	@PostMapping("api/users")
 	public ResponseEntity<User> AddUser(@Valid @RequestBody User user) {
 		
-		if (userRepository.save(user) != null && !user.validateEmail(user.getEmail())) {
+		if (userRepository.save(user) != null) {
 			if (user.getUserType() == null)
 				user.setUserType(UserType.guest);
+			
+				userRepository.save(user);
+			
 				return ResponseEntity.ok(user);			
 
 		} else {

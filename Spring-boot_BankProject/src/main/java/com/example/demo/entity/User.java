@@ -3,17 +3,17 @@ package com.example.demo.entity;
 
 import java.util.Optional;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 import com.example.demo.entity.enums.UserType;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -23,16 +23,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	@NotBlank
+	@NotNull
+	@NotEmpty
+	@Size(min=3, max=20)
 	private String name;
 
-	@Column(nullable = false)
+	@NotNull
 	@Email
 	private String email;
 	
 	private UserType userType;
-
 	
 	public User() {
 		this.name = "";
@@ -93,19 +93,12 @@ public class User {
 		Optional<User> newUser = userOpt.map(e-> {
 			if(!user.getName().isEmpty()) e.setName(user.getName());
 			
-			if(!user.getEmail().isEmpty() && validateEmail(userOpt.get().getEmail())) {
-				e.setEmail(user.getEmail());
-			}
+			if(!user.getEmail().isEmpty()) e.setEmail(user.getEmail());
 			
 			if(user.userType != null) e.setUserType(user.getUserType());
 			return e;
 		});
 		return newUser;
-	}
-	
-	 public boolean validateEmail(String email) {
-		if(email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) return false;
-		return true;
 	}
 	
 }
