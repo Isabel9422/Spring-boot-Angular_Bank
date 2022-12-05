@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.User;
@@ -20,6 +21,7 @@ import com.example.demo.entity.enums.UserType;
 import com.example.demo.repository.UserRepository;
 
 @RestController
+@RequestMapping("api/users")
 public class UserController {
 
 	@Autowired
@@ -30,13 +32,13 @@ public class UserController {
 	}
 	
 
-	@GetMapping("api/users")
+	@GetMapping()
 	public List<User> GetUsers() {
 		return userRepository.findAll();
 
 	}
 
-	@GetMapping("api/users/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<User> findById(@PathVariable("id") Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
 
@@ -48,7 +50,7 @@ public class UserController {
 
 	}
 	
-	@PostMapping("api/users")
+	@PostMapping()
 	public ResponseEntity<User> AddUser(@Valid @RequestBody User user) {
 		
 		if (userRepository.save(user) != null) {
@@ -65,7 +67,7 @@ public class UserController {
 
 	}
 
-	@DeleteMapping("api/users/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity DeleteById(@PathVariable("id") Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
 
@@ -78,12 +80,12 @@ public class UserController {
 
 	}
 
-	@DeleteMapping("api/users")
+	@DeleteMapping()
 	public void DeleteAll() {
 		userRepository.deleteAll();
 	}
 
-	@PutMapping("api/users/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity updateUser(@RequestBody User user, @PathVariable("id") Long id) {
 
 		if (user.getId() != id) {
