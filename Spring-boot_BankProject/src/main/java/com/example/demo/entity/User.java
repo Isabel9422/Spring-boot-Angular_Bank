@@ -3,12 +3,12 @@ package com.example.demo.entity;
 
 import java.util.Optional;
 
-import com.example.demo.entity.enums.UserType;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -32,24 +32,19 @@ public class User {
 	@Email
 	private String email;
 	
+    @ManyToOne(cascade = CascadeType.PERSIST)
 	private UserType userType;
-	
-	public User() {
-		this.name = "";
-		this.email = "";
-		this.userType = null;
-		}
 
-	public User(String name, String email, UserType userType) {
+	public User(@NotNull @NotEmpty @Size(min = 3, max = 20) String name, @NotNull @Email String email,
+			UserType userType) {
 		this.name = name;
 		this.email = email;
 		this.userType = userType;
 	}
-
-	public User(User objUser) {
-		this.name = objUser.name;
-		this.email = objUser.email;
-		this.userType = objUser.userType;
+	
+	public User() {
+		this.name = "";
+		this.email = "";
 	}
 
 	public Long getId() {
@@ -87,18 +82,6 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", userType=" + userType + "]";
-	}
-	
-	public Optional<User> updateUser(User user, Long id, Optional<User> userOpt) {
-		Optional<User> newUser = userOpt.map(e-> {
-			if(!user.getName().isEmpty()) e.setName(user.getName());
-			
-			if(!user.getEmail().isEmpty()) e.setEmail(user.getEmail());
-			
-			if(user.userType != null) e.setUserType(user.getUserType());
-			return e;
-		});
-		return newUser;
 	}
 	
 }

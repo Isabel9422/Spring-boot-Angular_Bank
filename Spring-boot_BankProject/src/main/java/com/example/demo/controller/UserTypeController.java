@@ -17,55 +17,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.User;
 import com.example.demo.entity.UserType;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("api/users")
-public class UserController {
+@RequestMapping("api/userTypes")
+public class UserTypeController {
 
 	@Autowired
 	UserService userService;
-	
-	
+
 	@GetMapping()
-	public List<User> GetUsers() {
-		return this.userService.FindAllUsers();
+	public List<UserType> GetUsersTypes() {
+		return this.userService.FindAllUserTypes();
+
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findById(@PathVariable("id") Long id) {
+	public ResponseEntity<UserType> findById(@PathVariable("id") Long id) {
+		
+		UserType userType = this.userService.FindUserType(id);
 
-		User user = this.userService.FindUser(id);
-
-		if (user != null) {
-			return ResponseEntity.ok(user);
+		if (userType != null) {
+			return ResponseEntity.ok(userType);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 
 	}
-	
+
 	@PostMapping()
-	public ResponseEntity<User> AddUser(@Valid @RequestBody User user) {
-		
-		Optional<UserType> result = this.userService.FindAllUserTypes().stream().parallel()
-				.filter(e -> e.getType().equals(user.getUserType().getType()))
+	public ResponseEntity<UserType> AddUserType(@Valid @RequestBody UserType userType) {
+
+		Optional<UserType> result = this.GetUsersTypes().stream().parallel()
+				.filter(e -> e.getType().equals(userType.getType()))
 				.findAny();
 
 		try {
-			if (user != null && !result.isPresent()) {
-				User aux = this.userService.saveUser(user);
+			if (userType != null && !result.isPresent()) {
+				UserType aux = this.userService.saveUserType(userType);
 				return ResponseEntity.ok(aux);
 
 			} else {
-				User aux = user;
-				aux.setUserType(result.get());
-				this.userService.saveUser(aux);
-				return ResponseEntity.ok(aux);
+				return ResponseEntity.ok(result.get());
 			}
 		} catch (Exception ex) {
 			return ResponseEntity.badRequest().build();
@@ -74,10 +69,10 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity DeleteById(@PathVariable("id") Long id) {
-		User user = this.userService.deleteUser(id);
-		
-		if (user !=null) {
-			return ResponseEntity.ok(user);
+		UserType userType = this.userService.deleteUserType(id);
+				
+		if (userType !=null) {
+			return ResponseEntity.ok(userType);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
@@ -85,17 +80,15 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity updateUser(@RequestBody User user, @PathVariable("id") Long id) {
+	public ResponseEntity updateUser(@RequestBody UserType userType, @PathVariable("id") Long id) {
 
-		User newuser = this.userService.updateUser(id, user);
+		UserType newuserType = this.userService.updateUserType(id, userType);
 		
-		if (newuser !=null) {
-			return ResponseEntity.ok(newuser);
+		if (userType !=null) {
+			return ResponseEntity.ok(newuserType);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 
-
 	}
-
 }
