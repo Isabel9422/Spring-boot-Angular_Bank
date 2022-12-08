@@ -1,0 +1,29 @@
+<div class=" m-5">
+    <div class="container">
+      <div class="row justify-content-end py-3">
+        <div class="col-auto">
+          <a (click)="goToAddUserType()" class="btn btn-danger">Add userType</a>
+        </div>
+      </div>
+        <table class="table">
+            <thead class="bg-dark text-white text-center">
+              <tr>
+                <th scope="col"><a (click)="changeSort('id',1)"><img [ngStyle]="{'display':hiddenArrowUp1}" src="../../../../assets/triangle-16.png"></a>
+                  <a (click)="changeSort('id',1)"><img [ngStyle]="{'display':hiddenArrowDown1}" src="../../../../assets/triangle-down.png"></a>
+                  <span class="mx-2">ID</span></th>
+                <th scope="col">Type user</th>
+                <th scope="col-md-4"></th>
+              </tr>
+            </thead>
+            <tbody class="bg-light text-center">
+              <tr *ngFor="let userType of userTypes | orderList:optionSort.property:optionSort.order">
+                <td>{{userType.id}}</td>
+                <td>{{userType.type}}</td>
+                <td><a (click)="goToAddUserType(userType.id)" class="btn btn-secondary">Edit</a>
+                    <span class="mx-2"></span>
+                    <a (click)="deleteUser(userType.id)" class="btn btn-danger">Remove</a></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>

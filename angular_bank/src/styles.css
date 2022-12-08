@@ -1,0 +1,11 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+body {
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to left top, #890e54, #814688, #706da9, #6a8db9, #80a9be);
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}

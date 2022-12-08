@@ -1,0 +1,16 @@
+<div class="d-flex p-5 align-items-center justify-content-center">
+<div class="card text-white bg-dark p-4 col-md-4 align-items-center justify-content-center">
+<div class="container card bg-black text-white">
+    <form (ngSubmit)="editAddUserType()" #userForm="ngForm">
+      <h2 class="text-center pt-4">Add / Edit an UserType</h2>
+      <div class="form-group">
+        <label for="type" class="py-3">Name</label>
+        <input type="text" class="form-control" id="type" (ngModelChange)="userType.type=$event" [ngModel]="oldUserType.type" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group py-4">
+          <input type="submit" class="btn btn-success" value="Submit">
+      </div>
+    </form>  
+  </div>
+</div>
+</div>
