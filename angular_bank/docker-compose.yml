@@ -1,12 +1,21 @@
 version: '3.4'
 
 services:
-  angularbank:
-    image: angularbank
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+  db:
+    image: mysql:8.0
+    restart: always
     environment:
-      NODE_ENV: production
+      - MYSQL_DATABASE=bank
+      - MYSQL_USER=guest
+      - MYSQL_ROOT_PASSWORD=guest
     ports:
-      - 4200:4200
+      - '3306:3306'
+    volumes:
+      - /var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  angularbank:
+    container_name: angularbank
+    build: .
+    ports:
+      - "4200:80"
